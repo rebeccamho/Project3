@@ -50,6 +50,7 @@ public class Main {
 			
 			ArrayList<String> ladder = getWordLadderDFS(start,end);
 			printLadder(ladder, start, end);
+			// DFS TO DO: may need to clear wordsCheckedDFS at the end?
 		}
 	}
 	
@@ -141,9 +142,10 @@ public class Main {
 	 */
 	public static void printLadder(ArrayList<String> ladder, String start, String end) {
 		int size = ladder.size();
-
+		int numRungs = size - 2;
+		
 		if(size > 0) { // a word ladder was found
-			System.out.println("a " + size + "-rung word ladder exists between " + start + " and " + end + ".");
+			System.out.println("a " + numRungs + "-rung word ladder exists between " + start + " and " + end + ".");
 			for(int i = 0; i < size; i++) {
 				// for testing purposes
 				String word = ladder.remove(0);
