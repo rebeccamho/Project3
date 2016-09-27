@@ -17,8 +17,14 @@ package assignment3;
 import java.util.*;
 import java.io.*;
 
+
 public class Main {
 
+	public static ArrayList<String> deadend; 
+	public static ArrayList<String> wordsChecked;
+	public static String alphabet = "abcdefghijklmnopqrstuvwxyz";
+	public static Set<String> dict;
+		
 	// static variables and constants only here.
 	
 	public static void main(String[] args) throws Exception {
@@ -37,15 +43,30 @@ public class Main {
 		initialize();
 		ArrayList<String> input = parse(kb);
 		
-		System.out.println(input.get(0) + input.get(1));
+		//System.out.println(input.get(0) + input.get(1));
 
 		// TODO methods to read in words, output ladder
+		String start = input.remove(0);
+		String end = input.remove(0);
+		
+		ArrayList<String> ladder = getWordLadderDFS(start,end);
+		if(ladder != null) {
+			int size = ladder.size();
+			for(int i = 0; i < size; i++) {
+				System.out.println(ladder.remove(0));
+			}	
+			//System.out.println("ladder size is " + ladder.size());
+		}
 	}
 	
 	public static void initialize() {
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
+		deadend = new ArrayList<String>();
+		wordsChecked = new ArrayList<String>();
+		dict = makeDictionary();
+
 	}
 	
 	/**
@@ -73,11 +94,70 @@ public class Main {
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
-		// TODO some code
-		Set<String> dict = makeDictionary();
-		// TODO more code
+		ArrayList<String> ladder = new ArrayList<String>();
 		
-		return null; // replace this line later with real return
+		if(depthFirstSearch(start, end, ladder, true)) {
+			return ladder;
+		} else {
+			return null;
+		}
+		 // replace this line later with real return
+	}
+	
+	public static boolean depthFirstSearch(String start, String end, ArrayList<String> ladder, boolean first) {
+		if(start.equals(end)) { 
+			System.out.println("found the end, start is " + start + " end is " + end);
+			//ladder.add(start);
+			return true; 
+		}
+		
+		wordsChecked.add(start);
+		int childCount = 0;
+		int i = 0;
+		int j = 0;
+		int diff = 0;
+		int index = 0;
+		
+		for(i = 0; i < start.length(); i++) {
+			if(start.charAt(i) != end.charAt(i)) {
+				index = i;
+				diff +=1;	
+			}
+		}
+		if(diff == 1){
+			if(first) {
+				ladder.add(0, start);
+				ladder.add(1,end);
+			} else { ladder.add(0,end); }
+			return true;
+		}
+		
+		
+		for(i = 0; i < start.length(); i++) {
+			for(j = 0; j < alphabet.length(); j++) {
+				String newWord = start;
+				char[] newWordChars = start.toCharArray();
+				newWordChars[i] = alphabet.charAt(j);
+				newWord = String.valueOf(newWordChars);
+				
+				if(dict.contains(newWord.toUpperCase()) && !wordsChecked.contains(newWord)) {
+					//System.out.println(newWord);
+					childCount++;
+					if(!deadend.contains(newWord)) {
+						if(depthFirstSearch(newWord, end, ladder,false)) {
+							ladder.add(0,newWord);
+							return true;
+						}
+	
+					}
+				}
+			}
+		}
+		
+		if(childCount == 0) { // there are no words that can be produced from start
+			deadend.add(start);
+		}
+		return false;
 	}
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {

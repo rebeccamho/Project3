@@ -10,4 +10,6 @@ public class Node {
 	Node(Node parent) {
 		this.parent = parent;
 	}
+	
+
 }
