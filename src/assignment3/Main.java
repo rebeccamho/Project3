@@ -25,7 +25,6 @@ public class Main {
 	public static String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	public static Set<String> dict;
 		
-	// static variables and constants only here.
 	
 	public static void main(String[] args) throws Exception {
 		
@@ -42,10 +41,8 @@ public class Main {
 		}
 		initialize();
 		ArrayList<String> input = parse(kb);
-		
-		
-		// TODO methods to read in words, output ladder
-		if(input != null) { 
+				
+		if(input != null) { // user did not choose to quit
 			String start = input.remove(0);
 			String end = input.remove(0);
 			
@@ -57,13 +54,9 @@ public class Main {
 	}
 	
 	public static void initialize() {
-		// initialize your static variables or constants here.
-		// We will call this method before running our JUNIT tests.  So call it 
-		// only once at the start of main.
 		deadendDFS = new ArrayList<String>();
 		wordsCheckedDFS = new ArrayList<String>();
 		dict = makeDictionary();
-
 	}
 	
 	/**
@@ -102,16 +95,11 @@ public class Main {
 	 * If no word ladder is found, an empty ladder will be returned.
 	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
-		
-		// Returned list should be ordered start to end.  Include start and end.
-		// Return empty list if no ladder.
 		ArrayList<String> ladder = new ArrayList<String>();
 		
 		depthFirstSearch(start, end, ladder, true);
 		return ladder;
 	}
-	
-
 	
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		
@@ -122,6 +110,10 @@ public class Main {
 		return null; // replace this line later with real return
 	}
     
+	/**
+	 * This method takes a file and puts each String in the file into a HashSet.
+	 * @return the Set containing each String in the file.
+	 */
 	public static Set<String>  makeDictionary () {
 		Set<String> words = new HashSet<String>();
 		Scanner infile = null;
@@ -173,50 +165,44 @@ public class Main {
 	 * @return true if a word ladder was found, false otherwise.
 	 */
 	public static boolean depthFirstSearch(String start, String end, ArrayList<String> ladder, boolean first) {
-		if(start.equals(end)) { 
-			System.out.println("found the end, start is " + start + " end is " + end);
-			return true; 
-		}
-		
+
 		wordsCheckedDFS.add(start);
-		int childCount = 0;
+		int childCount = 0; // tracks the number of words that are one letter apart from start
+		int diff = 0; // tracks the number of characters that are different between start and end
 		int i = 0;
 		int j = 0;
-		int diff = 0;
 		
-		for(i = 0; i < start.length(); i++) {
+		for(i = 0; i < start.length(); i++) { // check how many characters start and end have in common
 			if(start.charAt(i) != end.charAt(i)) {
 				diff +=1;	
 			}
 		}
-		if(diff == 1){
-			if(first) {
+		if(diff == 1) { // if start and end are only one character apart, we've found a ladder
+			if(first) { // create a two-rung ladder if this occurred on the first call to depthFirstSearch
 				ladder.add(0, start);
 				ladder.add(1,end);
-			} else { ladder.add(0,end); }
+			} else { ladder.add(0,end); } // add word to word ladder
 			return true;
 		}
 		
 		
-		for(i = 0; i < start.length(); i++) {
-			for(j = 0; j < alphabet.length(); j++) {
+		for(i = 0; i < start.length(); i++) { // iterate through all character spots in start
+			for(j = 0; j < alphabet.length(); j++) { // iterate through all letters of the alphabet
 				String newWord = start;
 				char[] newWordChars = start.toCharArray();
-				newWordChars[i] = alphabet.charAt(j);
+				newWordChars[i] = alphabet.charAt(j); // change start at i to contain j'th letter in alphabet
 				newWord = String.valueOf(newWordChars);
 				
-				if(dict.contains(newWord.toUpperCase()) && !wordsCheckedDFS.contains(newWord)) {
-					//System.out.println(newWord);
-					childCount++;
-					if(!deadendDFS.contains(newWord)) {
-						if(depthFirstSearch(newWord, end, ladder,false)) {
+				if(dict.contains(newWord.toUpperCase()) && !wordsCheckedDFS.contains(newWord)) { // the word is in the dictionary and it has not been checked before
+					childCount++; 
+					if(!deadendDFS.contains(newWord)) { // the word has not been marked as producing no children
+						if(depthFirstSearch(newWord, end, ladder, false)) { // true if a word ladder was produced
 							ladder.add(0,newWord);
 							if(first) {
 								ladder.add(0,start);
 							}
 							return true;
 						}
-	
 					}
 				}
 			}
