@@ -20,8 +20,8 @@ import java.io.*;
 
 public class Main {
 
-	public static ArrayList<String> deadend; 
-	public static ArrayList<String> wordsChecked;
+	public static ArrayList<String> deadendDFS; // keeps track of words that are not one letter away from any words
+	public static ArrayList<String> wordsCheckedDFS; // keeps track of words already looked at in DFS
 	public static String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	public static Set<String> dict;
 		
@@ -43,23 +43,23 @@ public class Main {
 		initialize();
 		ArrayList<String> input = parse(kb);
 		
-		//System.out.println(input.get(0) + input.get(1));
-
+		
 		// TODO methods to read in words, output ladder
-		String start = input.remove(0);
-		String end = input.remove(0);
-		
-		ArrayList<String> ladder = getWordLadderDFS(start,end);
-		printLadder(ladder);
-		
+		if(input != null) { 
+			String start = input.remove(0);
+			String end = input.remove(0);
+			
+			ArrayList<String> ladder = getWordLadderDFS(start,end);
+			printLadder(ladder);
+		}
 	}
 	
 	public static void initialize() {
 		// initialize your static variables or constants here.
 		// We will call this method before running our JUNIT tests.  So call it 
 		// only once at the start of main.
-		deadend = new ArrayList<String>();
-		wordsChecked = new ArrayList<String>();
+		deadendDFS = new ArrayList<String>();
+		wordsCheckedDFS = new ArrayList<String>();
 		dict = makeDictionary();
 
 	}
@@ -73,6 +73,12 @@ public class Main {
 		ArrayList<String> input = new ArrayList<String>();
 		
 		String start = keyboard.next();
+		
+		if(start.equals("/quit")) { // user chose to quit
+			input = null;
+			return input;
+		}
+		
 		start = start.trim();
 		start = start.toLowerCase();
 		String end = keyboard.next();
@@ -106,16 +112,14 @@ public class Main {
 			return true; 
 		}
 		
-		wordsChecked.add(start);
+		wordsCheckedDFS.add(start);
 		int childCount = 0;
 		int i = 0;
 		int j = 0;
 		int diff = 0;
-		int index = 0;
 		
 		for(i = 0; i < start.length(); i++) {
 			if(start.charAt(i) != end.charAt(i)) {
-				index = i;
 				diff +=1;	
 			}
 		}
@@ -135,10 +139,10 @@ public class Main {
 				newWordChars[i] = alphabet.charAt(j);
 				newWord = String.valueOf(newWordChars);
 				
-				if(dict.contains(newWord.toUpperCase()) && !wordsChecked.contains(newWord)) {
+				if(dict.contains(newWord.toUpperCase()) && !wordsCheckedDFS.contains(newWord)) {
 					//System.out.println(newWord);
 					childCount++;
-					if(!deadend.contains(newWord)) {
+					if(!deadendDFS.contains(newWord)) {
 						if(depthFirstSearch(newWord, end, ladder,false)) {
 							ladder.add(0,newWord);
 							if(first) {
@@ -153,7 +157,7 @@ public class Main {
 		}
 		
 		if(childCount == 0) { // there are no words that can be produced from start
-			deadend.add(start);
+			deadendDFS.add(start);
 		}
 		return false;
 	}
