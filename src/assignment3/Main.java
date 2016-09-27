@@ -50,13 +50,8 @@ public class Main {
 		String end = input.remove(0);
 		
 		ArrayList<String> ladder = getWordLadderDFS(start,end);
-		if(ladder != null) {
-			int size = ladder.size();
-			for(int i = 0; i < size; i++) {
-				System.out.println(ladder.remove(0));
-			}	
-			//System.out.println("ladder size is " + ladder.size());
-		}
+		printLadder(ladder);
+		
 	}
 	
 	public static void initialize() {
@@ -146,6 +141,9 @@ public class Main {
 					if(!deadend.contains(newWord)) {
 						if(depthFirstSearch(newWord, end, ladder,false)) {
 							ladder.add(0,newWord);
+							if(first) {
+								ladder.add(0,start);
+							}
 							return true;
 						}
 	
@@ -186,7 +184,19 @@ public class Main {
 	}
 	
 	public static void printLadder(ArrayList<String> ladder) {
-		
+		if(ladder != null) {
+			int size = ladder.size();
+			for(int i = 0; i < size; i++) {
+				// for testing purposes
+				String word = ladder.remove(0);
+				if(ladder.contains(word)) {
+					System.out.println("BAD!!! CONTAINS DUPLICATES!");
+				}
+				System.out.println(word);
+				
+				//System.out.println(ladder.remove(0));
+			}	
+		} 
 	}
 	// TODO
 	// Other private static methods here
