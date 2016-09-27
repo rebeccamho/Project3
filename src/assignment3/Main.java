@@ -93,24 +93,88 @@ public class Main {
 		return input;
 	}
 	
+	/**
+	 * This method takes in two Strings and attempts to find a word ladder between them
+	 * using depth-first search.
+	 * @param start is the beginning String.
+	 * @param end is the end String.
+	 * @return ArrayList of Strings in the word ladder between start and end. 
+	 * If no word ladder is found, an empty ladder will be returned.
+	 */
 	public static ArrayList<String> getWordLadderDFS(String start, String end) {
 		
 		// Returned list should be ordered start to end.  Include start and end.
 		// Return empty list if no ladder.
 		ArrayList<String> ladder = new ArrayList<String>();
 		
-		if(depthFirstSearch(start, end, ladder, true)) {
-			return ladder;
-		} else {
-			return null;
-		}
-		 // replace this line later with real return
+		depthFirstSearch(start, end, ladder, true);
+		return ladder;
 	}
 	
+
+	
+    public static ArrayList<String> getWordLadderBFS(String start, String end) {
+		
+		// TODO some code
+		Set<String> dict = makeDictionary();
+		// TODO more code
+		
+		return null; // replace this line later with real return
+	}
+    
+	public static Set<String>  makeDictionary () {
+		Set<String> words = new HashSet<String>();
+		Scanner infile = null;
+		try {
+			infile = new Scanner (new File("five_letter_words.txt"));
+		} catch (FileNotFoundException e) {
+			System.out.println("Dictionary File not Found!");
+			e.printStackTrace();
+			System.exit(1);
+		}
+		while (infile.hasNext()) {
+			words.add(infile.next().toUpperCase());
+		}
+		return words;
+	}
+	
+	/**
+	 * This method prints the word ladder that exists between two Strings.
+	 * @param ladder is the word ladder.
+	 * @param start is the beginning String.
+	 * @param end is the end String.
+	 */
+	public static void printLadder(ArrayList<String> ladder, String start, String end) {
+		int size = ladder.size();
+
+		if(size > 0) { // a word ladder was found
+			System.out.println("a " + size + "-rung word ladder exists between " + start + " and " + end + ".");
+			for(int i = 0; i < size; i++) {
+				// for testing purposes
+				String word = ladder.remove(0);
+				if(ladder.contains(word)) {
+					System.out.println("BAD!!! CONTAINS DUPLICATES!");
+				}
+				System.out.println(word);
+				
+				//System.out.println(ladder.remove(0));
+			}	
+		} else { // no word ladder exists between start and end
+			System.out.println("no word ladder can be found between " + start + " and " + end + ".");
+		}
+	}
+	
+	/**
+	 * This method finds the word ladder between two Strings using depth-first search.
+	 * @param start is the beginning String.
+	 * @param end is the end String.
+	 * @param ladder is the word ladder to be constructed.
+	 * @param first is true when this is the first call to depthFirstSearch, false otherwise.
+	 * @return true if a word ladder was found, false otherwise.
+	 */
 	public static boolean depthFirstSearch(String start, String end, ArrayList<String> ladder, boolean first) {
 		if(start.equals(end)) { 
 			System.out.println("found the end, start is " + start + " end is " + end);
-			//ladder.add(start);
 			return true; 
 		}
 		
@@ -163,51 +227,5 @@ public class Main {
 		}
 		return false;
 	}
-	
-    public static ArrayList<String> getWordLadderBFS(String start, String end) {
-		
-		// TODO some code
-		Set<String> dict = makeDictionary();
-		// TODO more code
-		
-		return null; // replace this line later with real return
-	}
-    
-	public static Set<String>  makeDictionary () {
-		Set<String> words = new HashSet<String>();
-		Scanner infile = null;
-		try {
-			infile = new Scanner (new File("five_letter_words.txt"));
-		} catch (FileNotFoundException e) {
-			System.out.println("Dictionary File not Found!");
-			e.printStackTrace();
-			System.exit(1);
-		}
-		while (infile.hasNext()) {
-			words.add(infile.next().toUpperCase());
-		}
-		return words;
-	}
-	
-	public static void printLadder(ArrayList<String> ladder, String start, String end) {
-		if(ladder != null) {
-			int size = ladder.size();
-			System.out.println("a " + size + "-rung word ladder exists between " + start + " and " + end + ".");
-			for(int i = 0; i < size; i++) {
-				// for testing purposes
-				String word = ladder.remove(0);
-				if(ladder.contains(word)) {
-					System.out.println("BAD!!! CONTAINS DUPLICATES!");
-				}
-				System.out.println(word);
-				
-				//System.out.println(ladder.remove(0));
-			}	
-		} else {
-			System.out.println("no word ladder can be found between " + start + " and " + end + ".");
-		}
-	}
-	// TODO
-	// Other private static methods here
 }
 
