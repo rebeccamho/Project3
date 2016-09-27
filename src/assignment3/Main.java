@@ -67,18 +67,21 @@ public class Main {
 	public static ArrayList<String> parse(Scanner keyboard) {
 		ArrayList<String> input = new ArrayList<String>();
 		
-		String start = keyboard.next();
+		String userInput = keyboard.nextLine();
 		
-		if(start.equals("/quit")) { // user chose to quit
-			input = null;
-			return input;
-		}
+		String[] elements = userInput.split("\\s+");
+		String start = elements[0];
+		String end = elements[1];
 		
 		start = start.trim();
 		start = start.toLowerCase();
-		String end = keyboard.next();
 		end = end.trim();
 		end = end.toLowerCase();
+		
+		if(start.equals("/quit") || end.equals("/quit")) { // user chose to quit
+			input = null;
+			return input;
+		}
 		
 		input.add(start);
 		input.add(end);
