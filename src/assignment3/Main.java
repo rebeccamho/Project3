@@ -49,8 +49,10 @@ public class Main {
 			String start = input.remove(0);
 			String end = input.remove(0);
 			
+			// BFS
+			
 			ArrayList<String> ladder = getWordLadderDFS(start,end);
-			printLadder(ladder);
+			printLadder(ladder, start, end);
 		}
 	}
 	
@@ -187,9 +189,10 @@ public class Main {
 		return words;
 	}
 	
-	public static void printLadder(ArrayList<String> ladder) {
+	public static void printLadder(ArrayList<String> ladder, String start, String end) {
 		if(ladder != null) {
 			int size = ladder.size();
+			System.out.println("a " + size + "-rung word ladder exists between " + start + " and " + end + ".");
 			for(int i = 0; i < size; i++) {
 				// for testing purposes
 				String word = ladder.remove(0);
@@ -200,7 +203,9 @@ public class Main {
 				
 				//System.out.println(ladder.remove(0));
 			}	
-		} 
+		} else {
+			System.out.println("no word ladder can be found between " + start + " and " + end + ".");
+		}
 	}
 	// TODO
 	// Other private static methods here
