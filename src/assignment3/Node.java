@@ -7,6 +7,10 @@ public class Node {
 	Node parent;
 	String word;
 	
+	Node(String word) {
+		this.word = word;
+	}
+	
 	Node(Node parent) {
 		this.parent = parent;
 	}
