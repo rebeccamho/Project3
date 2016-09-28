@@ -12,7 +12,6 @@
  * Fall 2016
  */
 
-//hello
 package assignment3;
 import java.util.*;
 import java.io.*;
@@ -91,8 +90,11 @@ public class Main {
 		ArrayList<String> wordLadder = new ArrayList<String>();
 		Set<String> dict = makeDictionary();
 		Node topNode = new Node(start);
+		//arraylist to hold all of the nodes a certain number of rungs away from start
 		ArrayList<Node> checkNodes = new ArrayList<Node>();
+		ArrayList<String> checkNodeWords = new ArrayList<String>();
 		checkNodes.add(topNode);
+		checkNodeWords.add(topNode.word);
 		while(checkNodes.size() > 0) {
 			int size = checkNodes.size();
 			//add children of nodes in checkNodes to checkNodes
@@ -104,20 +106,12 @@ public class Main {
 					for(char letter = 'a';letter <= 'z'; letter++) {
 						String s = beginning + letter + ending;
 						if(dict.contains(s.toUpperCase()) && !s.equals(checkNodes.get(node).word)) {
-							if(checkNodes.get(node).parent == null || (!s.equals(checkNodes.get(node).parent.word))) {
-								boolean duplicate = false;
-								for(int i = 0; i < checkNodes.size(); i++) {
-									if(checkNodes.get(i).word.equals(s)) {
-										duplicate = true;
-										break;
-									}
-								}
-								if(!duplicate) {
-									child = new Node(checkNodes.get(node));
-									child.word = s;
-									checkNodes.get(node).children.add(child);
-									checkNodes.add(child);
-								}
+							if(checkNodes.get(node).parent == null || (!s.equals(checkNodes.get(node).parent.word) && !checkNodeWords.contains(s))) {
+								child = new Node(checkNodes.get(node));
+								child.word = s;
+								checkNodes.get(node).children.add(child);
+								checkNodes.add(child);
+								checkNodeWords.add(child.word);
 							}
 						}
 					}
