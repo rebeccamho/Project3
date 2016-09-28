@@ -138,7 +138,7 @@ public class Main {
 				}
 			}
 		}
-		return null;
+		return wordLadder;
 	}
     
 	public static Set<String>  makeDictionary () {
