@@ -80,6 +80,13 @@ public class Main {
 		return null; // replace this line later with real return
 	}
 	
+    /**This method attempts to find a word ladder between two words with 
+     * breadth-first search
+     * @param start
+     * @param end
+     * @return arraylist of words in ladder if one exists, 
+     * an empty arraylist otherwise
+     */
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		ArrayList<String> wordLadder = new ArrayList<String>();
 		Set<String> dict = makeDictionary();
