@@ -68,22 +68,22 @@ public class Main {
 	public static ArrayList<String> parse(Scanner keyboard) {
 		ArrayList<String> input = new ArrayList<String>();
 		
-		String userInput = keyboard.nextLine();
-		
-		String[] elements = userInput.split("\\s+");
-		String start = elements[0];
-		String end = elements[1];
-		
+		String start = keyboard.next();
 		start = start.trim();
 		start = start.toLowerCase();
+		
+		if(start.equals("/quit")) {
+			return null;
+		}
+		
+		String end = keyboard.next();
 		end = end.trim();
 		end = end.toLowerCase();
 		
-		if(start.equals("/quit") || end.equals("/quit")) { // user chose to quit
-			input = null;
-			return input;
+		if(end.equals("/quit")) {
+			return null;
 		}
-		
+			
 		input.add(start);
 		input.add(end);
 		
@@ -219,6 +219,9 @@ public class Main {
 	 */
 	public static boolean depthFirstSearch(String start, String end, ArrayList<String> ladder, boolean first) {
 
+		if(start.equals(end)) {
+			return false;
+		}
 		wordsCheckedDFS.add(start);
 		int childCount = 0; // tracks the number of words that are one letter apart from start
 		int diff = 0; // tracks the number of characters that are different between start and end
