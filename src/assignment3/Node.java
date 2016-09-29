@@ -20,10 +20,18 @@ public class Node {
 	Node parent;
 	String word;
 	
+	/**
+	 * Constructor for Node that sets its word attribute to an input String.
+	 * @param word is the String to set word to.
+	 */
 	Node(String word) {
 		this.word = word;
 	}
 	
+	/**
+	 * Constructor for Node that sets its parent attribute to an input Node.
+	 * @param word is the Node to set parent to.
+	 */
 	Node(Node parent) {
 		this.parent = parent;
 	}

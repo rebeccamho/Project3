@@ -44,7 +44,9 @@ public class Main {
 			String end = input.remove(0);
 			ArrayList<String> wordLadder = new ArrayList<String>();
 			wordLadder = getWordLadderBFS(start, end);
+			System.out.println("BFS");
 			printLadder(wordLadder, start, end);
+			System.out.println("DFS");
 			ArrayList<String> ladder = getWordLadderDFS(start,end);
 			printLadder(ladder, start, end);
 		}
@@ -105,10 +107,10 @@ public class Main {
 	
     /**This method attempts to find a word ladder between two words with 
      * breadth-first search
-     * @param start
-     * @param end
-     * @return arraylist of words in ladder if one exists, 
-     * an empty arraylist otherwise
+     * @param start is the input word.
+     * @param end is the final word.
+     * @return ArrayList of words in ladder if one exists, 
+     * an empty ArrayList otherwise
      */
     public static ArrayList<String> getWordLadderBFS(String start, String end) {
 		ArrayList<String> wordLadder = new ArrayList<String>();
