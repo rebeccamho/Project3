@@ -39,17 +39,16 @@ public class Main {
 		}
 		initialize();
 		ArrayList<String> input = parse(kb);
-		if(input != null) { // user did not choose to quit
-			String start = input.remove(0);
-			String end = input.remove(0);
-			ArrayList<String> wordLadder = new ArrayList<String>();
-			wordLadder = getWordLadderBFS(start, end);
-			System.out.println("BFS");
-			printLadder(wordLadder, start, end);
-			System.out.println("DFS");
-			ArrayList<String> ladder = getWordLadderDFS(start,end);
-			printLadder(ladder, start, end);
-		}
+		String start = input.remove(0);
+		String end = input.remove(0);
+		ArrayList<String> wordLadder = new ArrayList<String>();
+		wordLadder = getWordLadderBFS(start, end);
+		System.out.println("BFS");
+		printLadder(wordLadder, start, end);
+		System.out.println("DFS");
+		ArrayList<String> ladder = getWordLadderDFS(start,end);
+		printLadder(ladder, start, end);
+
 		
 		
 	}
@@ -73,7 +72,7 @@ public class Main {
 		start = start.toLowerCase();
 		
 		if(start.equals("/quit")) {
-			return null;
+			System.exit(0);
 		}
 		
 		String end = keyboard.next();
@@ -81,7 +80,7 @@ public class Main {
 		end = end.toLowerCase();
 		
 		if(end.equals("/quit")) {
-			return null;
+			System.exit(0);
 		}
 			
 		input.add(start);
