@@ -50,7 +50,6 @@ public class Main {
 			
 			ArrayList<String> ladder = getWordLadderDFS(start,end);
 			printLadder(ladder, start, end);
-			// DFS TO DO: may need to clear wordsCheckedDFS at the end?
 		}
 	}
 	
@@ -146,15 +145,8 @@ public class Main {
 		
 		if(size > 0) { // a word ladder was found
 			System.out.println("a " + numRungs + "-rung word ladder exists between " + start + " and " + end + ".");
-			for(int i = 0; i < size; i++) {
-				// for testing purposes
-				String word = ladder.remove(0);
-				if(ladder.contains(word)) {
-					System.out.println("BAD!!! CONTAINS DUPLICATES!");
-				}
-				System.out.println(word);
-				
-				//System.out.println(ladder.remove(0));
+			for(int i = 0; i < size; i++) {				
+				System.out.println(ladder.remove(0));
 			}	
 		} else { // no word ladder exists between start and end
 			System.out.println("no word ladder can be found between " + start + " and " + end + ".");
